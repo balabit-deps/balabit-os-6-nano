@@ -1,0 +1,41 @@
+From: Benno Schulenberg <address@hidden>
+Date: Mon, 4 Apr 2016 21:04:25 +0200
+Subject: [PATCH 1/4] files: do not call free on the result of dirname
+
+This fixes https://savannah.gnu.org/bugs/?47544,
+and thus also http://gnats.netbsd.org/51010.
+
+Reported-by: Adrian Siekierka <address@hidden>
+Reported-by: Matthew Hall <address@hidden>
+Signed-off-by: Benno Schulenberg <address@hidden>
+Index: nano-2.5.3/src/files.c
+===================================================================
+--- nano-2.5.3.orig/src/files.c
++++ nano-2.5.3/src/files.c
+@@ -36,15 +36,11 @@
+ /* Verify that the containing directory of the given filename exists. */
+ bool has_valid_path(const char *filename)
+ {
+-    char *parentdir;
++    char *namecopy = mallocstrcpy(NULL, filename);
++    char *parentdir = dirname(namecopy);
+     struct stat parentinfo;
+     bool validity = FALSE;
+ 
+-    if (strrchr(filename, '/') == NULL)
+-	parentdir = mallocstrcpy(NULL, ".");
+-    else
+-	parentdir = dirname(mallocstrcpy(NULL, filename));
+-
+     if (stat(parentdir, &parentinfo) == -1) {
+ 	if (errno == ENOENT)
+ 	    statusbar(_("Directory '%s' does not exist"), parentdir);
+@@ -59,7 +55,7 @@ bool has_valid_path(const char *filename
+ 	    validity = TRUE;
+     }
+ 
+-    free(parentdir);
++    free(namecopy);
+ 
+     if (!validity)
+ 	beep();

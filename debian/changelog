@@ -1,3 +1,17 @@
+nano (2.5.3-2ubuntu2) xenial-proposed; urgency=medium
+
+  * Apply upstream patch to allocate enough space for the prompt when finding
+    a lock file. (LP: #1641592)
+
+ -- Brian Murray <brian@ubuntu.com>  Tue, 14 Feb 2017 15:10:03 -0800
+
+nano (2.5.3-2ubuntu1) xenial-proposed; urgency=medium
+
+  * Apply upstream patch to not call free on the result of a dirname.
+    (LP: #1595607)
+
+ -- Brian Murray <brian@ubuntu.com>  Thu, 15 Dec 2016 15:30:45 -0800
+
 nano (2.5.3-2) unstable; urgency=medium
 
   * Add rcfile_skip-rest-of-file-on-error.patch: patch from upstream SVN;

@@ -1,1 +1,3 @@
 rcfile_skip-rest-of-file-on-error.patch
+0001-files-do-not-call-free-on-the-result-of-dirname.patch
+allocate-enough-space.patch
